@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+    <head>
+        <script type="module">
+            import Mecab from "https://unpkg.com/mecab-wasm@1.0.2/lib/mecab.js";
+            const handleMessage = async (event) => {
+			    const { value } = JSON.parse(event.data);
+                // mecab 쿼리
+                let result = Mecab.query(value).map(item => item.word);
+                // 결과를 React Native 앱으로 전송
+                window.ReactNativeWebView.postMessage(JSON.stringify({
+                  value: result
+                }));
+		    };
+            // android 이벤트 캐치
+		    document.addEventListener('message', handleMessage);
+		    // ios 이벤트 캐치
+		    window.addEventListener('message', handleMessage);
+          </script>
+    </head>
+    <body>
+        <div id="container">
+            <h1>kitsune mecab...</h1>
+        <div>
+    </body>
+</html>
+

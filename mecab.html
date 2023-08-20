@@ -5,48 +5,23 @@
             import Mecab from "https://unpkg.com/mecab-wasm@1.0.2/lib/mecab.js";
             const handleMessage = async (event) => {
                 const { value } = JSON.parse(event.data);
-                // mecab 쿼리
                 try {
-                    let result = Mecab.query(value).map(item => item.word);
-                     // 결과를 React Native 앱으로 전송
+                    const result = Mecab.query(value).map(item => item.word);
                     window.ReactNativeWebView.postMessage(JSON.stringify({
                         value: result
                     }));
-                    console.log(result);
                 } catch(error){
                     console.log(error);
                 }
-               
             };
-            // android 이벤트 캐치
             document.addEventListener('message', handleMessage);
-            // ios 이벤트 캐치
             window.addEventListener('message', handleMessage);
-
-            function init() {
-                document.getElementById('button').addEventListener('click', function() {
-                    let text = document.getElementById('in').value;
-                    let result = Mecab.query(text);
-                    document.getElementById('out').value = JSON.stringify(result, null, 2);
-                });
-            }
-
-            window.addEventListener('load', function() {
-                Mecab.waitReady().then(init);
-            });
           </script>
     </head>
     <body>
-        <div id="container">
+        <div>
             <h1>kitsune mecab...</h1>
         <div>
-        <div>
-            <textarea id="in">吾輩は猫である</textarea>
-            <button id="button">Analyze</button>
-        </div>
-        <div>
-            <textarea id="out"></textarea>
-        </div>
     </body>
 </html>
 

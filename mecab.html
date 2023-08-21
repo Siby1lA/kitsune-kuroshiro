@@ -1,14 +1,23 @@
 <!doctype html>
 <html>
     <head>
+        <script src="./dist/kuroshiro.min.js"></script>
+        <script src="./dist/kuroshiro-analyzer-kuromoji.min.js"></script>
         <script type="module">
             import Mecab from "https://unpkg.com/mecab-wasm@1.0.2/lib/mecab.js";
+            const kuroshiro = new Kuroshiro.default();
+            await kuroshiro.init(new KuromojiAnalyzer({ dictPath: "./dict" }));
             const handleMessage = async (event) => {
                 const { value } = JSON.parse(event.data);
                 try {
-                    const result = Mecab.query(value).map(item => item.word);
+                    const mecabResult = Mecab.query(value).map(item => item.word);
+                    const kuroshiroResult = await kuroshiro.convert(value, {
+                        mode: "furigana",
+                        to: "hiragana",
+                    });
                     window.ReactNativeWebView.postMessage(JSON.stringify({
-                        value: result
+                        mecab: mecabResult,
+                        kuroshiro: kuroshiroResult
                     }));
                 } catch(error){
                     console.log(error);

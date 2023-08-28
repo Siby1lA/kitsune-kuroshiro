@@ -7,13 +7,13 @@
       const kuroshiro = new Kuroshiro.default();
       await kuroshiro.init(new KuromojiAnalyzer({ dictPath: "./dict" }));
       const handleMessage = async (event) => {
-        const { originalReibun, modifiedReibun } = JSON.parse(event.data);
+        const { underBarReibun } = JSON.parse(event.data);
         try {
-          const kuroshiroFurigana = await kuroshiro.convert(modifiedReibun, {
+          const kuroshiroFurigana = await kuroshiro.convert(underBarReibun, {
             mode: "furigana",
             to: "hiragana",
           });
-          const kuroshiroSpaced = await kuroshiro.convert(originalReibun, {
+          const kuroshiroSpaced = await kuroshiro.convert(underBarReibun, {
             mode: "spaced",
             to: "hiragana",
           });
